@@ -1,5 +1,5 @@
 (require 'package)
-(require 'corfu) ;;for some reason without that have problem: "symbols value as variable is void: corfu-map"
+;; (require 'corfu) ;;for some reason without that have problem: "symbols value as variable is void: corfu-map"
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
@@ -7,6 +7,7 @@
 (global-display-line-numbers-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode 0)
+(setq dired-kill-when-opening t)
 
 ;;; Environment - добавление каталогов в exec-path
 (dolist (dir '("/usr/local/bin"
@@ -128,8 +129,8 @@
   :config
   (project-tab-groups-mode 1))
 
-(global-set-key (kbd "C-<next>") 'tab-next)
-(global-set-key (kbd "C-<prior>") 'tab-previous)
+;; (global-set-key (kbd "C-<next>") 'tab-next)
+;; (global-set-key (kbd "C-<prior>") 'tab-previous)
 
 ;; (use-package consult
 ;;     :ensure t
@@ -152,3 +153,19 @@
 
 (setq corfu-auto t
       corfu-auto-delay 0.2)
+
+(use-package centaur-tabs
+  :ensure t
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward))
+
+(setq centaur-tabs-style "bar")
+(setq centaur-tabs-height 32)
+(setq centaur-tabs-icon-type 'nerd-icons)
+(setq centaur-tabs-set-icons t)
+(setq centaur-tabs-set-bar 'over)
+(setq centaur-tabs-set-modified-marker t)
