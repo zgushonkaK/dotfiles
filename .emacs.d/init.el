@@ -7,7 +7,18 @@
 (global-display-line-numbers-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode 0)
-(setq use-company nil) ;;t - for company mode
+
+;;; Environment - добавление каталогов в exec-path
+(dolist (dir '("/usr/local/bin"
+               "~/.local/bin"
+               "~/.cargo/bin"
+               "~/.ghcup/bin"
+               "~/.pyenv/bin"
+               "~/go/bin"
+               "~/.nodenv/shims"))
+  (let ((full-path (expand-file-name dir)))
+    (when (file-directory-p full-path)
+      (add-to-list 'exec-path full-path))))
 
 (use-package eglot
   :ensure t
@@ -89,45 +100,55 @@
   :mode (("CMakeLists\\.txt\\'" . cmake-mode)
          ("\\.cmake\\'" . cmake-mode)))
 
-(unless use-company
-  (use-package corfu
-    :after orderless
-    ;; Optional customizations
-    :custom
-    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
-    (corfu-separator ?\s)          ;; Orderless field separator
-    (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-    (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    (corfu-preview-current nil)    ;; Disable current candidate preview
-    ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-    ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-    (corfu-scroll-margin 5)        ;; Use scroll margin
-    ;; Enable Corfu only for certain modes.
-    :hook ((prog-mode . corfu-mode)
-           (shell-mode . corfu-mode)
-           (eshell-mode . corfu-mode))
-    ;; Recommended: Enable Corfu globally.
-    ;; This is recommended since Dabbrev can be used globally (M-/).
-    ;; See also `corfu-excluded-modes'.
-    :init
-    (global-corfu-mode) ; This does not play well in eshell if you run a repl
-    (setq corfu-auto t))
-    :config
-    (define-key corfu-map (kbd "M-p") #'corfu-popupinfo-scroll-down) ;; corfu-next
-    (define-key corfu-map (kbd "M-n") #'corfu-popupinfo-scroll-up))  ;; corfu-previous
+(defun go-run-this-file ()
+  "go run"
+  (interactive)
+  (compile (format "go run %s" (buffer-file-name))))
 
-(when use-company
-  (use-package company
-    :ensure t
-    :hook ((prog-mode . company-mode))
-    :bind (:map company-active-map
-                ("<return>" . nil)
-                ("RET" . nil)
-                ("C-<return>" . company-complete-selection)
-                ([tab] . company-complete-selection)
-                ("TAB" . company-complete-selection)))
-  (use-package company-box
-    :ensure t
-    :hook (company-mode . company-box-mode)))
+(defun go-compile ()
+  "go compile"
+  (interactive)
+  (compile "go build -v && go test -v && go vet"))
+
+(defun go-compile-debug ()
+  "go compile with necessary flags to debug with gdb"
+  (interactive)
+  (compile "go build -gcflags=all=\"-N -l\""))
+
+(use-package go-mode
+  :ensure t
+  :bind (("C-c C-k" . go-run-this-file)
+         ("C-c C-c" . go-compile)
+         ("C-c C-d" . go-compile-debug))
+  :hook ((before-save . eglot-format-buffer)))
+
+
+(use-package project-tab-groups
+  :ensure
+  :config
+  (project-tab-groups-mode 1))
+
+(global-set-key (kbd "C-<next>") 'tab-next)
+(global-set-key (kbd "C-<prior>") 'tab-previous)
+
+;; (use-package consult
+;;     :ensure t
+;;     :demand t
+;;     :bind (("C-s" . consult-line)
+;;            ("C-M-l" . consult-imenu)
+;;            ("C-x b" . consult-buffer)
+;;            ("C-x C-b" . consult-bookmark)
+;;            ("C-M-s" . consult-ripgrep)
+;;            :map minibuffer-local-map
+;;            ("C-r" . consult-history)))
+
+(use-package corfu
+  :ensure t
+  ;; Optional customizations
+  :hook
+  (prog-mode . (lambda () (setq-local corfu-auto t)))
+  :init
+  (global-corfu-mode))
+
+(setq corfu-auto t
+      corfu-auto-delay 0.2)
