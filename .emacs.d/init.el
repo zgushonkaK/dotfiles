@@ -9,6 +9,13 @@
 (scroll-bar-mode 0)
 (setq dired-kill-when-opening t)
 
+;; Добавить недостающие пути к PATH
+(setenv "PATH" (concat 
+                "/home/vsveolod-fedora/.local/bin" ":"
+                "/usr/local/go/bin" ":"
+                "/home/vsveolod-fedora/go/bin" ":"
+                (getenv "PATH")))
+
 ;;; Environment - добавление каталогов в exec-path
 (dolist (dir '("/usr/local/bin"
                "~/.local/bin"
@@ -16,7 +23,10 @@
                "~/.ghcup/bin"
                "~/.pyenv/bin"
                "~/go/bin"
-               "~/.nodenv/shims"))
+               "~/.nodenv/shims"
+	       "/home/vsveolod-fedora/.local/bin"
+	       "/usr/local/go/bin"
+	       "/home/vsveolod-fedora/go/bin"))
   (let ((full-path (expand-file-name dir)))
     (when (file-directory-p full-path)
       (add-to-list 'exec-path full-path))))
@@ -169,3 +179,35 @@
 (setq centaur-tabs-set-icons t)
 (setq centaur-tabs-set-bar 'over)
 (setq centaur-tabs-set-modified-marker t)
+
+(setq neo-theme (if (display-graphic-p) 'nerd-icons))
+
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
+
+;; Move backup files to ~/.emacs.d/backups
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name "~/.emacs.d/backups"))))
+
+;; Create backup directory if it doesn't exist
+(unless (file-exists-p (expand-file-name "~/.emacs.d/backups"))
+  (make-directory (expand-file-name "~/.emacs.d/backups") t))
+
+;; Move auto-save files to ~/.emacs.d/auto-save/
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "~/.emacs.d/auto-save/") t)))
+
+;; Create auto-save directory if it doesn't exist
+(unless (file-exists-p (expand-file-name "~/.emacs.d/auto-save/"))
+  (make-directory (expand-file-name "~/.emacs.d/auto-save/") t))
+
+;; Auto-save every 300 keystrokes and 30 seconds
+(setq auto-save-interval 300)
+(setq auto-save-timeout 30)
+
+;; Auto-save on focus lost
+(add-hook 'focus-out-hook 'do-auto-save)
+
+(use-package deadgrep
+  :ensure t
+  :bind ("C-c s" . deadgrep))
