@@ -1,0 +1,1 @@
+("~/.emacs.d/" "~/git-reps/tgbotfront/" "~/git-reps/wb_client_server/")

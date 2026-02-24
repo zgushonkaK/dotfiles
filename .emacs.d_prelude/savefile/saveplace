@@ -1,0 +1,34 @@
+;;; -*- coding: utf-8; mode: lisp-data -*-
+(("/home/debianoid/git-reps/tgbotfront/main.go" . 3381)
+ ("/home/debianoid/.bashrc" . 3528)
+ ("/home/debianoid/.emacs.d/"
+  (dired-filename . "/home/debianoid/.emacs.d/modules"))
+ ("/home/debianoid/.emacs.d/modules/"
+  (dired-filename . "/home/debianoid/.emacs.d/modules/prelude-go.el"))
+ ("/home/debianoid/.emacs.d/modules/prelude-go.el" . 1458)
+ ("/home/debianoid/.emacs.d/sample/prelude-modules.el" . 3551)
+ ("/home/debianoid/.emacs.d/sample/"
+  (dired-filename . "/home/debianoid/.emacs.d"))
+ ("/home/debianoid/git-reps/tgbotfront/"
+  (dired-filename . "/home/debianoid/git-reps"))
+ ("/home/debianoid/git-reps/" (dired-filename . "/home/debianoid"))
+ ("/home/debianoid/" (dired-filename . "/home/debianoid/.emacs.d"))
+ ("/home/debianoid/.emacs.d/modules/prelude-lsp.el" . 1129)
+ ("/home/debianoid/git-reps/wb_client_server/"
+  (dired-filename
+   . "/home/debianoid/git-reps/wb_client_server/handler"))
+ ("/home/debianoid/git-reps/wb_client_server/handler/"
+  (dired-filename
+   . "/home/debianoid/git-reps/wb_client_server/handler/handler.go"))
+ ("/home/debianoid/git-reps/wb_client_server/main.go" . 673)
+ ("/home/debianoid/.config/"
+  (dired-filename . "/home/debianoid/.config/alacritty"))
+ ("/home/debianoid/.config/alacritty/" . 151)
+ ("/home/debianoid/.emacs.d/personal/custom.el" . 312)
+ ("/home/debianoid/dev/test/" (dired-filename . "/home/debianoid/dev"))
+ ("/home/debianoid/dev/" (dired-filename . "/home/debianoid"))
+ ("/home/debianoid/dev/test/main.cpp" . 88)
+ ("/home/debianoid/.emacs.d/personal/preload/"
+  (dired-filename . "/home/debianoid/.emacs.d/personal"))
+ ("/home/debianoid/.emacs.d/personal/"
+  (dired-filename . "/home/debianoid/.emacs.d")))
